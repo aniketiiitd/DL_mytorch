@@ -1,13 +1,13 @@
 import numpy as np
 
-class Linear:
+class linear:
     def __init__(self, num_in_features:int,num_out_features:int):
 
         ''' W : weight matrix of shape -> num_out_features x num_in_features
             B : bias matrix of shape -> num_out_features'''
         
-        self.W=np.random.Generator.uniform(-0.5,0.5,(num_out_features,num_in_features))
-        self.B=np.random.Generator.uniform(-0.5,0.5,(num_out_features,1))
+        self.W=np.random.uniform(-0.5,0.5,(num_out_features,num_in_features))
+        self.B=np.random.uniform(-0.5,0.5,(num_out_features,1))
 
     def forward(self,A:np.ndarray)->np.ndarray:
 
