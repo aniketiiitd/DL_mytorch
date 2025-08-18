@@ -21,7 +21,7 @@ class linear:
     
     def backward(self,dLdZ):
 
-        '''dLdA : grad of Loss wrt to the layer's neurons' activations for all samples, shape -> N x num_out_features (num of neurons)
+        '''dLdA : grad of Loss wrt to the previous layer's neurons' activations for all samples, shape -> N x num_out_features (num of neurons)
             dLdW : grad of Loss wrt to the layer's weights' for all samples, shape -> same as W
             dLdB : grad of Loss wrt to the layer's biases' for all samples, shape -> same as B
             
