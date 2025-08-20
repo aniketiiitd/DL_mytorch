@@ -42,7 +42,30 @@ class batchnorm1d:
 
         return self.BZ
     
-bn1=batchnorm1d(num_features=5)
-arr=np.random.rand(2,5)
-#print(arr)
-bn1.forward(arr,True)
+    def backward(self,dLdBZ:np.ndarray)->np.ndarray:
+        """
+        Args:
+            dLdBZ (np.ndarray,default=None): The derivative of Loss wrt batch normalized output
+        """
+        self.dLdBW=(dLdBZ*self.NZ).sum(axis=0)
+        #print(self.dLdBW.shape)
+        self.dLdBb=dLdBZ.sum(axis=0)
+        #print(self.dLdBb.shape)
+        dLdNZ=dLdBZ*self.BW
+        #print(dLdNZ.shape)
+        dNZdM = -(1/np.sqrt(self.V+self.eps)) -(1/2)*(self.Z-self.M)*(1/(np.sqrt(self.V+self.eps)*(self.V+self.eps)))* ((-2/self.N)*np.sum(self.Z-self.M,axis=0))
+        ##print(dNZdM.shape)
+        dLdM = np.sum((dLdNZ * dNZdM),axis=0)
+        #print(dLdM.shape)
+        dLdV = (-1/2)*np.sum(dLdNZ*(self.Z-self.M)*(1/(np.sqrt(self.V+self.eps)*(self.V+self.eps))),axis=0) 
+        #print(dLdV.shape)
+        dLdZ = (dLdNZ * 1/(np.sqrt(self.V+self.eps))) + dLdV * ((2/self.N)*(self.Z-self.M)) + ((1/self.N)* dLdM)
+        #print(dLdZ.shape)
+        return dLdZ
+
+    
+#bn1=batchnorm1d(num_features=5)
+#arr=np.random.rand(2,5)
+##print(arr)
+#der=bn1.forward(arr,False)
+#bn1.backward(der)
